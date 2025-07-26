@@ -12,6 +12,7 @@ from flask1 import User
 from session3 import Patient
 from session2 import mongoDBhelper
 import hashlib
+from bson.objectid import ObjectId
 
 web_app = Flask('app')
 db = mongoDBhelper()
@@ -45,6 +46,16 @@ def add_patient():
         return render_template ('add-patient.html', name = session['name'], email = session['email'])
     else:
         return redirect('/')
+    
+    
+@web_app.route('/add-consultation<id>',methods = ['GET'])
+def add_consultation():
+    if len(session['user_id']) > 0 :
+        return render_template ('add-consultation.html', name = session['name'], email = session['email'])
+    else:
+        return redirect('/')
+    
+    
 #this is 
 @web_app.route('/adduser', methods=['POST','GET'])
 def add_user_in_db():
@@ -88,10 +99,10 @@ def add_pateint_in_db():
         
         if len(str(result.inserted_id)) >0 :
         
-            return render_template('/home.html', name = session['name'] , email = session['email'])
+            return render_template('/success.html', message = 'Patient {{}} added successfully'.format(patient.name), name = session['name'], email = session['email'])
     
         else:
-            return'somrthing went wrong'
+            return render_template('/error.html', message = 'something went wrong. try again!', name = session['name'], email = session['email'])
     
      else:
          return redirect('/')
@@ -116,7 +127,7 @@ def fetch_user_from_db():
          session['email'] = user['email']
          return render_template('home.html', name = user['name'], email = user['email'])
     else:
-        return 'Username or Password Invalid. Please Try Again'
+        return render_template('/error.html', message = 'Invalid Username or password. try again!', name = session['name'], email = session['email'])
  
 @web_app.route('/logout')
 def logout():
@@ -141,12 +152,20 @@ def fetch_patients_from_db():
             return render_template('show-patients.html', name = session['name'], 
                                     email = session['email'], total = len(documents), patients = documents)
         else:
-            return 'Patients not found'   
-    
+            return render_template('/error.html', message = 'Patients not found. try again!')
      else:
         return redirect('/')
     
 
+@web_app.route('/delete-patient/<id>')
+def delete_patient(id):
+    db.select_db(collection='patients')
+    query = {'_id': ObjectId(id)}
+    result = db.delete(query)
+    if result.deleted_count > 0:
+        return render_template('success.html', message='Patient Deleted Successfully', name=session['name'], email=session['email'])
+    else:
+        return render_template('error.html', message='Patient Deletion Failed. Try Again', name=session['name'], email=session['email'])
 
 def main():
     # Secret Key, we have to create manually of our choice

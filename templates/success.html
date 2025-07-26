@@ -110,22 +110,12 @@
               
            <nav class="navbar">
         <h1>Doctor's App</h1>
+        <p>Success</p>
         <ul class="nav-links">
-            <li class="nav-item">
-                <a class="nav-link" href="/add-patient">Add Patient</a>
-            </li>
             <li class="nav-item">
                 <a class="nav-link" href="/home">Home</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="/add-consultation">Add Consultation</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">View Consultations</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Profile</a>
-            </li>
+            
             <li class="nav-item">
                 <a class="nav-link" href="/logout">Logout</a>
             </li>
@@ -133,45 +123,16 @@
     </nav>
 
     <section class="dashboard">
-        <h2>Showing Dr.{{name}}'s patients</h2>
+        <h2>Welcome, Dr.{{name}}</h2>
         <h4>Email->{{email}}</h4>
-        <p>Select an option from the menu to begin managing patients and consultations.</p>
+        
     </section>
-
-    <div class="container mt-3">
-  <h2>All Patients</h2>
-  <table class="table">
-    <thead>
-      <tr>
-        <th>Name</th>
-        <th>Phone</th>
-        <th>Email</th>
-        <th>Address</th>
-        <th>Gender</th>
-        <th>Age</th>
-        <th>Actions</th>
-      </tr>
-    </thead>
-    <tbody>
-
-    {% for patient in patients %}
-
-      <tr>
-        <td>{{patient['name']}}</td>
-        <td>{{patient['phone']}}</td>
-        <td>{{patient['email']}}</td>
-        <td>{{patient['address']}}</td>
-        <td>{{patient['gender']}}</td>
-        <td>{{patient['age']}}</td>
-        <td><a href="/update-patient/{{patient['_id']}}">Update</a> | <a href="/delete-patient/{{patient['_id']}}">Delete</a> | <a href="/add-consultation/{{patient['_id']}}">Consultation</a></td>
-      </tr>
-
-    {% endfor %}
-    </tbody>
-  </table>
-</div>
     
-
+   <div class="container mt-3">
+  <div class="alert alert-success">
+    <strong>Success!</strong> {{message}}
+  </div>
+</div>
 
   <!-- Bootstrap 5.3 JS -->
   <script src=""></script>
